@@ -1,0 +1,11 @@
+@isTest
+public class BatchAccount_Test {
+    
+    public static void creationOfAccount(){
+        List<Account> lstOfAccs = new List<Account>();    
+        for (Integer i=0;i<30;i++) {
+            Account acct= new Account(Name='Account '+i,Billingcity='New York', Billingcountry='USA',Description='Account is created from batch class'); 
+            lstOfAccs.add(acct);
+        }
+        }
+        }
