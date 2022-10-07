@@ -1,0 +1,47 @@
+/*
+Class Name:BatchAccount
+
+Description: This batch class is used to scramble the data.
+*/
+global class BatchAccount implements Database.Batchable<sObject>, Database.Stateful {
+    global Integer recordsProcessed = 0;
+    global Integer SuccessCount = 0;
+    global Integer FailureCount = 0;
+    
+    global String query = 'SELECT Id,Name,Owner__c from Account';
+    
+    /*** Start Method ***/
+    global Database.QueryLocator start(Database.BatchableContext bc) {
+        //system.debug('@@@query is:'+query);
+        return Database.getQueryLocator(query);            
+    }
+    /*** Execute Method ***/    
+    global void execute(Database.BatchableContext bc, List<Account> scope){
+        //system.debug('@@@Inside  execute:');
+        List<Account> acctslist = new List<Account>();
+        
+            for (Account accObject : scope) {
+                Integer len=accObject.Name.length();
+                Integer halflen=len/2;
+                String str1=accObject.Name.substring(0,halflen);
+                String str2 =accObject.Name.substring(halflen);
+                accObject.Name = str2+str1;
+                acctslist.add(accObject);
+                recordsProcessed = recordsProcessed + 1;
+            }           
+            if(!acctslist.isEmpty()){
+                Database.SaveResult[] srList = Database.Update(acctslist);
+                for(Database.SaveResult sr:srList){
+                    if(sr.isSuccess()){
+                        SuccessCount++;
+                    }
+                    else{
+                        FailureCount++;
+                    }
+                    
+                }
+            }
+        
+    }
+     
+}
