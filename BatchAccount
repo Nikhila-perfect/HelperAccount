@@ -19,7 +19,7 @@ global class BatchAccount implements Database.Batchable<sObject>, Database.State
     global void execute(Database.BatchableContext bc, List<Account> scope){
         //system.debug('@@@Inside  execute:');
         List<Account> acctslist = new List<Account>();
-        
+        try{
             for (Account accObject : scope) {
                 Integer len=accObject.Name.length();
                 Integer halflen=len/2;
@@ -41,7 +41,10 @@ global class BatchAccount implements Database.Batchable<sObject>, Database.State
                     
                 }
             }
-        
+        }catch(Exception e)
+        {
+        e.getMessage();
+        }
     }
      
 }
