@@ -10,4 +10,10 @@ public class BatchAccount_Test {
             return lstOfAccs;
         }
         }
+        private static testmethod void test1(){
+        creationOfAccount();
+        BatchAccount batchacc=new BatchAccount();
+        Id batchId=Database.executeBatch(batchacc);
+        
+    }
         }
