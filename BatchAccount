@@ -46,5 +46,10 @@ global class BatchAccount implements Database.Batchable<sObject>, Database.State
         e.getMessage();
         }
     }
-     
+ global void finish(Database.BatchableContext bc){
+        AsyncApexJob job = [SELECT Id, Status, NumberOfErrors, JobItemsProcessed,TotalJobItems, CreatedBy.Email
+        FROM AsyncApexJob
+        WHERE Id = :bc.getjobId()];
+        EmailSender.sendMail(UserInfo.getUserEmail(),'Batch Apex',SuccessCount,FailureCount);       
+    }       
 }
